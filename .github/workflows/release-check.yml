@@ -1,0 +1,20 @@
+name: Check Latest Release from Atom Feed
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  check_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest release from Atom feed
+        run: |
+          LATEST_RELEASE=$(curl -s https://github.com/DataRecce/recce/releases.atom | xmllint --xpath "string(//entry[1]/title)" -)
+          echo "Latest release: $LATEST_RELEASE"
+          echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
+
+      - name: Use the latest release
+        run: |
+          echo "The latest release of DataRecce/recce is $LATEST_RELEASE"
