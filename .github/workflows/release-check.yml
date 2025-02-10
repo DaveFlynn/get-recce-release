@@ -9,6 +9,9 @@ jobs:
   check_release:
     runs-on: ubuntu-latest
     steps:
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
       - name: Get latest release from Atom feed
         run: |
           LATEST_RELEASE=$(curl -s https://github.com/DataRecce/recce/releases.atom | xmllint --xpath "string(//entry[1]/title)" -)
